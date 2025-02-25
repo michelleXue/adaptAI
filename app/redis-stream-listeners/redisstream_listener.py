@@ -70,7 +70,7 @@ def redis_polling():
     redis_client = connect_to_redis()
     setup_consumer_group(redis_client, REDIS_STREAM_NAME, CONSUMER_GROUP)
 
-    logger.info(f"Starting to listen for messages on stream '{REDIS_STREAM_NAME}'")
+    #logger.info(f"Starting to listen for messages on stream '{REDIS_STREAM_NAME}'")
 
     # Track last processed ID for recovery
     last_id = '0'  # Start from the beginning
