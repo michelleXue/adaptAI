@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request
 import httpx
 import jwt
+import uuid
 from pydantic import BaseModel
 from datetime import datetime, timedelta
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -9,6 +10,7 @@ from slowapi import Limiter
 from slowapi.util import get_remote_address
 from fastapi.middleware.cors import CORSMiddleware
 import logging
+from rediscache import cache_exists,store_session
 
 
 limiter = Limiter(key_func=get_remote_address)
@@ -18,10 +20,10 @@ app = FastAPI(title="AdaptAI API Gateway")
 app.state.limiter = limiter
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"],#TODO: Edit it to match the web client
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"],
+    allow_headers=["*"]
 )
 
 logging.basicConfig(
@@ -49,12 +51,21 @@ MICROSERVICES = {
 # Generate JWT token
 def create_jwt_token(username: str):
     """Create a JWT token."""
-    expiration = datetime.utcnow() + timedelta(hours=1)  # Token expiration time
+    ttl = timedelta(minutes=60)
+    session_id = str(uuid.uuid4())  # Generate a unique session ID
+    expiration = datetime.utcnow() + ttl  # Token expiration time
     payload = {
-        "sub": username,
+        "user_id": username,
+        "session_id": session_id,
         "exp": expiration
     }
-    return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
+    token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
+    store_session(username,session_id,token,ttl)
+    response = {
+        'token': token,
+        'expires_in': ttl
+    }
+    return response
 
 # User login
 @app.post("/login")
@@ -67,7 +78,7 @@ def login(user: UserLogin):
     raise HTTPException(status_code=401, detail="Invalid credentials")
 
 
-async def forward_request(service_name: str, request: Request):
+async def forward_request(service_name: str, request: Request, headers: dict):
     """Forward request from API Gateway to the target microservice."""
     if service_name not in MICROSERVICES:
         logger.error(f"Service {service_name} not found.")
@@ -76,7 +87,6 @@ async def forward_request(service_name: str, request: Request):
     async with httpx.AsyncClient() as client:
         method = request.method
         body = await request.body()
-        headers = dict(request.headers)
         service_url = f"{MICROSERVICES[service_name]}{request.url.path}"
         logger.info(f"Service URL: {service_url}")
         logger.info(f"Forwarding request: {method} {service_url} with body {body}")
@@ -109,8 +119,11 @@ async def gateway(service_name: str, request: Request, credentials: HTTPAuthoriz
     """Generic API Gateway endpoint for all services."""
     """Authenticated Gateway Request."""
     token = credentials.credentials
-    user = verify_jwt(token)
-    return await forward_request(service_name, request)
+    user_id, session_id = verify_jwt(token)
+    modified_headers = dict(request.headers)
+    modified_headers["user-id"] = user_id
+    modified_headers["session-id"] = session_id
+    return await forward_request(service_name, request, modified_headers)
 
 @app.get("/")
 def root():
@@ -120,7 +133,15 @@ def verify_jwt(token: str):
     """Verify JWT Token."""
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        return payload
+        user_id = payload["user_id"]
+        session_id = payload["session_id"]
+        # ✅ Check if session exists in Redis
+        session_key = f"session:{user_id}:{session_id}"
+
+        if not cache_exists(session_key):
+            return None  # Session does not exist or expired
+
+        return user_id, session_id
     except jwt.ExpiredSignatureError:
         logger.error(f"JWT Expired: {token}")
         raise HTTPException(status_code=401, detail="Token expired")
