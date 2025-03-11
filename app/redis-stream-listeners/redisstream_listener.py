@@ -70,7 +70,6 @@ def redis_polling():
     redis_client = connect_to_redis()
     setup_consumer_group(redis_client, REDIS_STREAM_NAME, CONSUMER_GROUP)
 
-
     # Track last processed ID for recovery
     last_id = '0'  # Start from the beginning
     while True:
