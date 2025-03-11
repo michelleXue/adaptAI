@@ -1,0 +1,34 @@
+site_name: Adapt AI
+
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+  - Reference Page: api_gateway.md
+
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            heading_level: 2
+            parameter_headings: false
+            show_root_heading: false
+            show_source: false
+            show_root_full_path: true
+            inherited_members: false
+            members_order: alphabetical
+            show_labels: false
+            summary:
+              attributes: true
+              functions: true
+              modules: false
+            docstring_section_style: list
+            annotations_path: brief
+            separate_signature: true
+            line_length: 60
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
