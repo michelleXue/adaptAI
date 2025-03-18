@@ -1,17 +1,56 @@
-# Welcome to MkDocs
+# Home Page
+## Code Annotation Examples
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+### Codeblocks
 
-## Commands
+some `code` here
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+### Plain code block
 
-## Project layout
+A plain code block:
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+```
+Some code here
+def myfunc()
+//some comment
+```
+
+### Code lang
+
+```py
+import tensorflow as tf
+def whatever()
+```
+
+### With title
+
+```py title="add.py"
+def add(items):
+    for i in range(len(items)):
+        items[i] = items[i]+1;
+```
+
+### With line numbers
+
+```py linenums="1"
+def add(items):
+    for i in range(len(items)):
+        items[i] = items[i]+1;
+```
+
+```py hl_lines="2 3"
+def add(items):
+    for i in range(len(items)):
+        items[i] = items[i]+1;
+```
+
+
+## Icons and Emojs
+
+:smile: 
+
+:fontawesome-regular-face-laugh-wink:
+
+:fontawesome-brands-twitter:{ .twitter }
+
+:octicons-heart-fill-24:{ .heart }
