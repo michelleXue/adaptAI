@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://sumeshsl.github.io/adaptai-documentation/</loc>
+         <lastmod>2025-03-18</lastmod>
+    </url>
+    <url>
+         <loc>https://sumeshsl.github.io/adaptai-documentation/admonitions/</loc>
+         <lastmod>2025-03-18</lastmod>
+    </url>
+    <url>
+         <loc>https://sumeshsl.github.io/adaptai-documentation/content-tabs/</loc>
+         <lastmod>2025-03-18</lastmod>
+    </url>
+    <url>
+         <loc>https://sumeshsl.github.io/adaptai-documentation/doc-gateway/</loc>
+         <lastmod>2025-03-18</lastmod>
+    </url>
+    <url>
+         <loc>https://sumeshsl.github.io/adaptai-documentation/doc-postprocessing/</loc>
+         <lastmod>2025-03-18</lastmod>
+    </url>
+    <url>
+         <loc>https://sumeshsl.github.io/adaptai-documentation/doc-preprocessing/</loc>
+         <lastmod>2025-03-18</lastmod>
+    </url>
+    <url>
+         <loc>https://sumeshsl.github.io/adaptai-documentation/doc-verification/</loc>
+         <lastmod>2025-03-18</lastmod>
+    </url>
+    <url>
+         <loc>https://sumeshsl.github.io/adaptai-documentation/seq-diagrams/</loc>
+         <lastmod>2025-03-18</lastmod>
+    </url>
+</urlset>
