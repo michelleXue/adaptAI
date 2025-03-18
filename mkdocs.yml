@@ -5,7 +5,32 @@ theme:
 
 nav:
   - Home: index.md
-  - Reference Page: api_gateway.md
+  - Getting Started:
+      - Introduction: getting-started/introduction.md
+      - Installation: getting-started/installation.md
+      - Quick Start: getting-started/quick-start.md
+  - Usage Guide:
+      - API Gateway: usage/api-gateway-usage.md
+      - Processing Logic: usage/processing-logic.md
+      - Example Use Cases: usage/example-use-cases.md
+  - API Reference:
+      - Overview: api/overview.md
+      - Endpoints: api/endpoints.md
+      - Error Handling: api/error-handling.md
+  - Database:
+      - Schema & Collections: database/schema.md
+      - Query Examples: database/queries.md
+  - Extending & Customizing:
+      - API Gateway: extending/api-gateway.md
+      - Logic Processing: extending/logic-processing.md
+      - Database Modifications: extending/database.md
+  - Developer Guide:
+      - Code Structure: developer/code-structure.md
+      - Key Functions: developer/key-functions.md
+      - Deployment & Scaling: developer/deployment.md
+      - Testing & Debugging: developer/testing.md
+  - Security & Best Practices: security.md
+  - FAQ & Troubleshooting: faq.md
 
 
 plugins:
