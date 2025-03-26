@@ -1,6 +1,6 @@
 from fastapi import APIRouter,Request
 from typing import List
-import logging
+import logging, os
 import asyncio
 import websockets
 from schemas import AIQueryResponse
@@ -37,7 +37,7 @@ async def websocket_client():
     Returns:  \n
         Realtime validated query.\n
     """
-    uri = "ws://api-verification:8002/ws"  # Use the service name in Docker
+    uri = os.environ.get("VERIFICATION_WS_URL")
     async with websockets.connect(uri) as websocket:
         await websocket.send("Hello from Post processing server!")
         response = await websocket.recv()
